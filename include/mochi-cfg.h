@@ -55,6 +55,7 @@ void mochi_cfg_release_component(json_t* component);
 /**
  * emits json string encoding of component configuration
  *
+ * @param [in] cfg               jansson reference to component configuration
  * @param [in] component_name    component name
  *
  * @returns string that must be free'd by caller
