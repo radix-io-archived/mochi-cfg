@@ -14,8 +14,8 @@ extern "C" {
 #include <jansson.h>
 
 /**
- * Parse configuration for component and set defaults for any unspecified
- * values
+ * Parse configuration for a specific component (possibly out a broader
+ * json string) and set defaults for any unspecified parameters
  *
  * @param [in] json_cfg_string   json string containing an object with
  *                               parameters for the specified component
@@ -30,7 +30,7 @@ json_t* mochi_cfg_get_component(const char *json_cfg_string,
     const char* defaults);
 
 /**
- * Retrieve integer value for specified parameter in component configuration
+ * Retrieve integer value for specified parameter within component configuration
  *
  * @param [in] component         jannson reference for component
  *                               configuration, as retrieved with
