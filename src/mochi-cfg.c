@@ -43,7 +43,7 @@ void mochi_cfg_release_component(json_t* component)
     return;
 }
 
-static json_t* mochi_cfg_get_component(const char *json_cfg_string,
+json_t* mochi_cfg_get_component(const char *json_cfg_string,
     const char* component_name,
     const char* defaults)
 {

@@ -17,6 +17,10 @@ char* mochi_cfg_emit(json_t *cfg, const char *component_name);
 
 int mochi_cfg_get_value_int(json_t *component, const char* in_key, int* out_value);
 
+json_t* mochi_cfg_get_component(const char *json_cfg_string,
+    const char* component_name,
+    const char* defaults);
+
 void mochi_cfg_release_component(json_t* component);
 
 #ifdef __cplusplus
