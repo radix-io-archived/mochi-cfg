@@ -1,0 +1,2 @@
+src_libmochi_cfg_la_SOURCES += \
+ src/mochi-cfg.c
