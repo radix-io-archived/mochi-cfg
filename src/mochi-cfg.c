@@ -82,20 +82,20 @@ json_t* mochi_cfg_get_component(const char *json_cfg_string,
         fprintf(stderr, "Error: default config line %d: %s\n", error.line, error.text);
         return(NULL);
     }
-    component_default = json_object_get(cfg_default, "abt-io");
+    component_default = json_object_get(cfg_default, component_name);
     if(!component_default)
     {
         json_decref(cfg_default);
         json_decref(cfg);
-        fprintf(stderr, "Error: default config lacks abt-io object.\n");
+        fprintf(stderr, "Error: default config lacks %s object.\n", component_name);
         return(NULL);
     }
-    component = json_object_get(cfg, "abt-io");
+    component = json_object_get(cfg, component_name);
     if(!component)
     {
         json_decref(cfg);
         json_decref(cfg_default);
-        fprintf(stderr, "Error: config lacks abt-io object.\n");
+        fprintf(stderr, "Error: config lacks %s object.\n", component_name);
         return(NULL);
     }
 
