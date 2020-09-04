@@ -136,14 +136,45 @@ json_t* mochi_cfg_get_component(const char *json_cfg_string,
         return(NULL);
     }
 
+    /* TODO: are we going to have to generalize this to arbitrary nesting at
+     * some point?  For now just go one nesting level in objects
+     */
     /* loop through and set any pairs that aren't already present in config */
     json_object_foreach(component_default, key_default, value_default)
     {
-        value = json_object_get(component, key_default);
-        if(!value)
+        /* support one level of nesting */
+        if(json_is_object(value_default))
         {
-            /* set default in cfg */
-            json_object_set(component, key_default, value_default);
+            json_t *component_default_nest =
+                json_object_get(component_default, key_default);
+            json_t *component_nest;
+            json_t *value_default_nest;
+            json_t *value_nest;
+            const char *key_default_nest;
+            component_nest = json_object_get(component, key_default);
+            if(!component_nest)
+            {
+                component_nest = json_object();
+                json_object_set(component, key_default, component_nest);
+            }
+            json_object_foreach(component_default_nest, key_default_nest, value_default_nest)
+            {
+                value_nest = json_object_get(component_nest, key_default_nest);
+                if(!value_nest)
+                {
+                    /* set default in cfg */
+                    json_object_set(component_nest, key_default_nest, value_default_nest);
+                }
+            }
+        }
+        else
+        {
+            value = json_object_get(component, key_default);
+            if(!value)
+            {
+                /* set default in cfg */
+                json_object_set(component, key_default, value_default);
+            }
         }
     }
 
