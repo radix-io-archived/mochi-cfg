@@ -56,6 +56,19 @@ int mochi_cfg_get_value_int(json_t *component, const char* in_key, int* out_valu
 int mochi_cfg_get_value_string(json_t *component, const char* in_key, const char** out_value);
 
 /**
+ * Retrieve reference to nested object within component configuration
+ *
+ * @param [in] component         jannson reference for component
+ *                               configuration, as retrieved with
+ *                               mochi_cfg_get_component()
+ * @param [in] in_key            name of nested object
+ * @param [out] out_object       reference to nested object
+ *
+ * @returns 0 on success, -1 on failure
+ */
+int mochi_cfg_get_object(json_t *component, const char* in_key, json_t** out_object);
+
+/**
  * counterpart to mochi_cfg_get_component() that releases the jansson
  * reference for the configuration
  *

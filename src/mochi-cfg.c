@@ -50,6 +50,15 @@ int mochi_cfg_get_value_int(json_t *component, const char* in_key, int* out_valu
     return(0);
 }
 
+int mochi_cfg_get_object(json_t *component, const char* in_key, json_t** out_object)
+{
+    *out_object = json_object_get(component, in_key);
+    if(!*out_object)
+        return(-1);
+
+    return(0);
+}
+
 void mochi_cfg_release_component(json_t* component)
 {
     json_decref(component);
