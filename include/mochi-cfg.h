@@ -43,6 +43,21 @@ json_t* mochi_cfg_get_component(const char *json_cfg_string,
 int mochi_cfg_get_value_int(json_t *component, const char* in_key, int* out_value);
 
 /**
+ * Set integer value for specified parameter within component configuration
+ *
+ * @param [in] component         jannson reference for component
+ *                               configuration, as retrieved with
+ *                               mochi_cfg_get_component()
+ * @param [in] in_key            name of parameter
+ * @param [in] in_value          new value of parameter
+ *
+ * @returns 0 on success, -1 on failure
+ */
+int mochi_cfg_set_value_int(json_t *component,
+    const char* in_key,
+    int in_value);
+
+/**
  * Retrieve string value for specified parameter within component configuration
  *
  * @param [in] component         jannson reference for component
