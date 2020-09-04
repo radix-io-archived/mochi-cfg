@@ -37,6 +37,20 @@ int mochi_cfg_get_value_string(json_t *component, const char* in_key, const char
     return(0);
 }
 
+int mochi_cfg_set_value_string(json_t *component, const char* in_key, const char* in_value)
+{
+    json_t *val_obj;
+    int ret;
+
+    val_obj = json_object_get(component, in_key);
+    if(!val_obj)
+        return(-1);
+
+    ret = json_string_set(val_obj, in_value);
+
+    return(ret);
+}
+
 int mochi_cfg_get_value_int(json_t *component, const char* in_key, int* out_value)
 {
     json_t *val_obj;
