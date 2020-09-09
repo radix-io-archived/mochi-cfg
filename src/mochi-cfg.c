@@ -9,6 +9,10 @@
 #include <jansson.h>
 #include "mochi-cfg.h"
 
+static json_t* __mochi_cfg_get_component(json_t* input_json,
+    const char* component_name,
+    const char* defaults);
+
 char* mochi_cfg_emit(json_t *cfg, const char *component_name)
 {
     json_t *emit_cfg;
@@ -93,18 +97,13 @@ void mochi_cfg_release_component(json_t* component)
     return;
 }
 
+
 json_t* mochi_cfg_get_component(const char *json_cfg_string,
     const char* component_name,
     const char* defaults)
 {
-    json_t *cfg_default;
     json_t *cfg;
-    json_t *component_default;
-    json_t *component;
     json_error_t error;
-    const char *key_default;
-    json_t *value_default;
-    json_t *value;
 
     cfg = json_loads(json_cfg_string, 0, &error);
     if(!cfg)
@@ -112,6 +111,39 @@ json_t* mochi_cfg_get_component(const char *json_cfg_string,
         fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
         return(NULL);
     }
+
+    return(__mochi_cfg_get_component(cfg, component_name, defaults));
+}
+
+json_t* mochi_cfg_get_component_file(const char *json_file,
+    const char* component_name,
+    const char* defaults)
+{
+    json_t *cfg;
+    json_error_t error;
+
+    cfg = json_load_file(json_file, 0, &error);
+    if(!cfg)
+    {
+        fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
+        return(NULL);
+    }
+
+    return(__mochi_cfg_get_component(cfg, component_name, defaults));
+}
+
+static json_t* __mochi_cfg_get_component(json_t* cfg,
+    const char* component_name,
+    const char* defaults)
+{
+    json_t *cfg_default;
+    json_t *component_default;
+    json_t *component;
+    json_error_t error;
+    const char *key_default;
+    json_t *value_default;
+    json_t *value;
+
     cfg_default = json_loads(defaults, 0, &error);
     if(!cfg_default)
     {
