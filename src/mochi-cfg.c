@@ -91,6 +91,34 @@ int mochi_cfg_get_object(json_t *component, const char* in_key, json_t** out_obj
     return(0);
 }
 
+int mochi_cfg_set_object_by_string(json_t *component, const char* in_key, const char* obj_string)
+{
+    json_t *new_json;
+    json_t *new_object;
+    json_error_t error;
+    int ret;
+
+    new_json = json_loads(obj_string, 0, &error);
+    if(!new_json)
+    {
+        json_decref(new_json);
+        fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
+        return(-1);
+    }
+
+    new_object = json_object_get(new_json, in_key);
+    if(!new_object)
+    {
+        fprintf(stderr, "Error: could not find %s in %s\n", in_key, obj_string);
+        return(-1);
+    }
+
+    /* update relevant part of component */
+    ret = json_object_set(component, in_key, new_object);
+
+    return(ret);
+}
+
 void mochi_cfg_release_component(json_t* component)
 {
     json_decref(component);

@@ -135,6 +135,18 @@ void mochi_cfg_release_component(json_t* component);
  */
 char* mochi_cfg_emit(json_t *cfg, const char *component_name);
 
+/**
+ * Update key (object) within component based on encoded json values in
+ * obj_string
+ *
+ * @param[in] component   target json to modify
+ * @param[in] in_key      name of object to modify
+ * @param[in] obj_string  replacement data (encoded)
+ *
+ * returns 0 on success, -1 on failure
+ */
+int mochi_cfg_set_object_by_string(json_t *component, const char* in_key, const char* obj_string);
+
 #ifdef __cplusplus
 }
 #endif
