@@ -147,6 +147,18 @@ char* mochi_cfg_emit(json_t *cfg, const char *component_name);
  */
 int mochi_cfg_set_object_by_string(json_t *component, const char* in_key, const char* obj_string);
 
+/**
+ * Append array found at key within component based on encoded json values in
+ * obj_string
+ *
+ * @param[in] component   target json to modify
+ * @param[in] in_key      name of array to append
+ * @param[in] obj_string  replacement data (encoded)
+ *
+ * returns 0 on success, -1 on failure
+ */
+int mochi_cfg_append_array_by_string(json_t *component, const char* in_key, const char* obj_string);
+
 #ifdef __cplusplus
 }
 #endif

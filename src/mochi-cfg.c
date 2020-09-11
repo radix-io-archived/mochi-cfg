@@ -96,6 +96,32 @@ int mochi_cfg_get_object(json_t *component, const char* in_key, json_t** out_obj
     return(0);
 }
 
+int mochi_cfg_append_array_by_string(json_t *component, const char* in_key, const char* obj_string)
+{
+    json_t *new_json;
+    json_t *array;
+    json_error_t error;
+    int ret;
+
+    new_json = json_loads(obj_string, 0, &error);
+    if(!new_json)
+    {
+        fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
+        return(-1);
+    }
+    array = json_object_get(component, in_key);
+    if(!array)
+    {
+        json_decref(new_json);
+        fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
+        return(-1);
+    }
+
+    ret = json_array_append(array, new_json);
+    return(ret);
+}
+
+
 int mochi_cfg_set_object_by_string(json_t *component, const char* in_key, const char* obj_string)
 {
     json_t *new_json;
