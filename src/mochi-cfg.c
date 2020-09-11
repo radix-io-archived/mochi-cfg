@@ -18,12 +18,17 @@ char* mochi_cfg_emit(json_t *cfg, const char *component_name)
     json_t *emit_cfg;
     char* ret;
 
-    assert(component_name);
-
-    emit_cfg = json_object();
-    json_object_set(emit_cfg, component_name, cfg);
-    ret = json_dumps(emit_cfg, JSON_INDENT(4));
-    json_decref(emit_cfg);
+    if(component_name)
+    {
+        emit_cfg = json_object();
+        json_object_set(emit_cfg, component_name, cfg);
+        ret = json_dumps(emit_cfg, JSON_INDENT(4));
+        json_decref(emit_cfg);
+    }
+    else
+    {
+        ret = json_dumps(cfg, JSON_INDENT(4));
+    }
 
     return(ret);
 }
@@ -179,21 +184,29 @@ static json_t* __mochi_cfg_get_component(json_t* cfg,
         fprintf(stderr, "Error: default config line %d: %s\n", error.line, error.text);
         return(NULL);
     }
-    component_default = json_object_get(cfg_default, component_name);
-    if(!component_default)
+    if(component_name)
     {
-        json_decref(cfg_default);
-        json_decref(cfg);
-        fprintf(stderr, "Error: default config lacks %s object.\n", component_name);
-        return(NULL);
+        component_default = json_object_get(cfg_default, component_name);
+        if(!component_default)
+        {
+            json_decref(cfg_default);
+            json_decref(cfg);
+            fprintf(stderr, "Error: default config lacks %s object.\n", component_name);
+            return(NULL);
+        }
+        component = json_object_get(cfg, component_name);
+        if(!component)
+        {
+            json_decref(cfg);
+            json_decref(cfg_default);
+            fprintf(stderr, "Error: config lacks %s object.\n", component_name);
+            return(NULL);
+        }
     }
-    component = json_object_get(cfg, component_name);
-    if(!component)
+    else
     {
-        json_decref(cfg);
-        json_decref(cfg_default);
-        fprintf(stderr, "Error: config lacks %s object.\n", component_name);
-        return(NULL);
+        component_default = cfg_default;
+        component = cfg;
     }
 
     /* TODO: are we going to have to generalize this to arbitrary nesting at
