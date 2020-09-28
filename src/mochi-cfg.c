@@ -106,14 +106,14 @@ int mochi_cfg_append_array_by_string(json_t *component, const char* in_key, cons
     new_json = json_loads(obj_string, 0, &error);
     if(!new_json)
     {
-        fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
+        fprintf(stderr, "mochi-cfg error: config line %d: %s\n", error.line, error.text);
         return(-1);
     }
     array = json_object_get(component, in_key);
     if(!array)
     {
         json_decref(new_json);
-        fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
+        fprintf(stderr, "mochi-cfg error: config line %d: %s\n", error.line, error.text);
         return(-1);
     }
 
@@ -133,14 +133,14 @@ int mochi_cfg_set_object_by_string(json_t *component, const char* in_key, const 
     if(!new_json)
     {
         json_decref(new_json);
-        fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
+        fprintf(stderr, "mochi-cfg error: config line %d: %s\n", error.line, error.text);
         return(-1);
     }
 
     new_object = json_object_get(new_json, in_key);
     if(!new_object)
     {
-        fprintf(stderr, "Error: could not find %s in %s\n", in_key, obj_string);
+        fprintf(stderr, "mochi-cfg error: could not find %s in %s\n", in_key, obj_string);
         return(-1);
     }
 
@@ -167,7 +167,7 @@ json_t* mochi_cfg_get_component(const char *json_cfg_string,
     cfg = json_loads(json_cfg_string, 0, &error);
     if(!cfg)
     {
-        fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
+        fprintf(stderr, "mochi-cfg error: config line %d: %s\n", error.line, error.text);
         return(NULL);
     }
 
@@ -184,7 +184,7 @@ json_t* mochi_cfg_get_component_file(const char *json_file,
     cfg = json_load_file(json_file, 0, &error);
     if(!cfg)
     {
-        fprintf(stderr, "Error: config line %d: %s\n", error.line, error.text);
+        fprintf(stderr, "mochi-cfg error: config line %d: %s\n", error.line, error.text);
         return(NULL);
     }
 
@@ -207,7 +207,7 @@ static json_t* __mochi_cfg_get_component(json_t* cfg,
     if(!cfg_default)
     {
         json_decref(cfg);
-        fprintf(stderr, "Error: default config line %d: %s\n", error.line, error.text);
+        fprintf(stderr, "mochi-cfg error: default config line %d: %s\n", error.line, error.text);
         return(NULL);
     }
     if(component_name)
@@ -217,7 +217,7 @@ static json_t* __mochi_cfg_get_component(json_t* cfg,
         {
             json_decref(cfg_default);
             json_decref(cfg);
-            fprintf(stderr, "Error: default config lacks %s object.\n", component_name);
+            fprintf(stderr, "mochi-cfg error: default config lacks %s object.\n", component_name);
             return(NULL);
         }
         component = json_object_get(cfg, component_name);
@@ -225,7 +225,7 @@ static json_t* __mochi_cfg_get_component(json_t* cfg,
         {
             json_decref(cfg);
             json_decref(cfg_default);
-            fprintf(stderr, "Error: config lacks %s object.\n", component_name);
+            fprintf(stderr, "mochi-cfg error: config lacks %s object.\n", component_name);
             return(NULL);
         }
     }
