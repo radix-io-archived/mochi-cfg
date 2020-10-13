@@ -255,6 +255,7 @@ static json_t* __mochi_cfg_get_component(json_t* cfg,
             {
                 component_nest = json_object();
                 json_object_set(component, key_default, component_nest);
+                json_decref(component_nest);
             }
             json_object_foreach(component_default_nest, key_default_nest, value_default_nest)
             {
