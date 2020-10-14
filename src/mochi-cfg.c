@@ -87,6 +87,24 @@ int mochi_cfg_set_value_int(json_t *component, const char* in_key, int in_value)
     return(ret);
 }
 
+int mochi_cfg_get_value_bool(json_t *component, const char* in_key, int* out_value)
+{
+    json_t *val_obj;
+
+    val_obj = json_object_get(component, in_key);
+    if(!val_obj)
+        return(-1);
+
+    *out_value = json_boolean_value(val_obj);
+
+    return(0);
+}
+
+int mochi_cfg_set_value_bool(json_t *component, const char* in_key, int in_value)
+{
+    return json_object_set_new(component, in_key, in_value ? json_true() : json_false());
+}
+
 int mochi_cfg_get_object(json_t *component, const char* in_key, json_t** out_object)
 {
     *out_object = json_object_get(component, in_key);
